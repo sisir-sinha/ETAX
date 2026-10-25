@@ -1,0 +1,49 @@
+# Deploy the ETAX static SPA to GitHub Pages.
+# Replaces jekyll-gh-pages.yml: this site is plain HTML/CSS/Vanilla JS
+# (no Jekyll/Ruby), so we simply assemble the publishable files and upload.
+name: Deploy ETAX static site to Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # Publish ONLY the redesigned site — the legacy HTTrack mirror
+      # (templates.thememodern.com/, hts-cache/, hts-log.txt, ...) stays
+      # in the repo history but is not deployed.
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp index.html 404.html .nojekyll _site/
+          cp -r assets _site/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "_site"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

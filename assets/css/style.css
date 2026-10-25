@@ -18,6 +18,9 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:var(--body);color:var(--muted);font-size:16px;line-height:1.65;background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+/* Side-entry AOS transforms start outside their final column; clip that
+   temporary overflow at the page shell without creating a scroll box. */
+#app{overflow-x:clip}
 img{max-width:100%;display:block}
 a{text-decoration:none;color:inherit}
 ul{list-style:none}

@@ -43,8 +43,15 @@ const pageHeader = (title, crumb, img) => `
     </div>
   </section>`;
 
-const serviceCard = (s, i) => `
-  <article class="service-card" data-aos="fade-up" data-aos-delay="${(i % 3) * 90}">
+/* Homepage-only alternating entrance pattern:
+   left column -> from left, centre -> from bottom, right column -> from right. */
+const columnAos = (i, cols = 3) => cols === 4
+  ? ["fade-right", "fade-up", "fade-up", "fade-left"][i % 4]
+  : ["fade-right", "fade-up", "fade-left"][i % 3];
+const aosFor = (pattern, i, cols = 3) => pattern === "columns" ? columnAos(i, cols) : "fade-up";
+
+const serviceCard = (s, i, pattern) => `
+  <article class="service-card" data-aos="${aosFor(pattern, i)}" data-aos-delay="${(i % 3) * 90}">
     <div class="service-media"><img src="${s.img}" alt="${esc(s.title)}" loading="lazy" /><span class="service-icon"><i class="${s.icon}"></i></span></div>
     <div class="service-body">
       <h4><a href="service/${s.slug}">${esc(s.title)}</a></h4><p>${esc(s.short)}</p>
@@ -55,14 +62,14 @@ const serviceCard = (s, i) => `
     </div>
   </article>`;
 
-const projectCard = (p, i) => `
-  <article class="project-card" data-cat="${esc(p.cat)}" data-aos="fade-up" data-aos-delay="${(i % 3) * 90}" data-goto="project/${p.slug}" role="link" tabindex="0">
+const projectCard = (p, i, pattern) => `
+  <article class="project-card" data-cat="${esc(p.cat)}" data-aos="${aosFor(pattern, i)}" data-aos-delay="${(i % 3) * 90}" data-goto="project/${p.slug}" role="link" tabindex="0">
     <img src="${p.img}" alt="${esc(p.title)}" loading="lazy" />
     <div class="project-overlay"><span class="cat">${esc(p.cat)} · ${esc(p.place)}</span><h4>${esc(p.title)}</h4><p>${esc(p.excerpt)}</p></div>
   </article>`;
 
-const postCard = (p, i) => `
-  <article class="blog-card" data-cat="${esc(p.cat)}" data-title="${esc((p.title + " " + p.excerpt).toLowerCase())}" data-aos="fade-up" data-aos-delay="${(i % 3) * 90}">
+const postCard = (p, i, pattern) => `
+  <article class="blog-card" data-cat="${esc(p.cat)}" data-title="${esc((p.title + " " + p.excerpt).toLowerCase())}" data-aos="${aosFor(pattern, i)}" data-aos-delay="${(i % 3) * 90}">
     <div class="blog-media"><a href="post/${p.slug}"><img src="${p.img}" alt="${esc(p.title)}" loading="lazy" /></a><span class="blog-date"><i class="fa-regular fa-calendar"></i> ${esc(p.date)}</span></div>
     <div class="blog-body">
       <div class="blog-meta"><span><i class="fa-solid fa-folder-open"></i> ${esc(p.cat)}</span><span><i class="fa-solid fa-user-pen"></i> ${esc(p.author.split(",")[0])}</span><span><i class="fa-regular fa-clock"></i> ${esc(p.read)}</span></div>
@@ -86,11 +93,11 @@ const statsBand = () => `
     </div></div>
   </section>`;
 
-const testimonialsSection = (title = "What Our Clients Say?") => `
+const testimonialsSection = (title = "What Our Clients Say?", fromRight = false) => `
   <section class="section">
     <div class="container">
       ${head("Testimonials", title, "Real words from factory owners, founders, doctors and NGOs who trust ETAX with their compliance.", true)}
-      <div class="swiper testi-swiper"><div class="swiper-wrapper">
+      <div class="swiper testi-swiper"${fromRight ? ' data-aos="fade-left"' : ""}><div class="swiper-wrapper">
         ${ETAX.testimonials.map(t => `<div class="swiper-slide"><div class="testi-card">
           <img class="stars" src="${IMG}stars.png" alt="5 star rating" /><i class="fa-solid fa-quote-left quote"></i>
           <p>${esc(t.text)}</p>
@@ -100,21 +107,21 @@ const testimonialsSection = (title = "What Our Clients Say?") => `
     </div>
   </section>`;
 
-const partnersSection = () => `
+const partnersSection = (fromLeft = false) => `
   <section class="section" style="padding:52px 0 64px">
     <div class="container">
       <p style="text-align:center" class="eyebrow">Trusted by growing companies in Bangladesh</p>
-      <div class="swiper partners-swiper" style="margin-top:2rem"><div class="swiper-wrapper">
+      <div class="swiper partners-swiper" style="margin-top:2rem"${fromLeft ? ' data-aos="fade-right"' : ""}><div class="swiper-wrapper">
         ${ETAX.partners.map(p => `<div class="swiper-slide"><img src="${p}" alt="Client logo" loading="lazy" /></div>`).join("")}
       </div></div>
     </div>
   </section>`;
 
-const callbackSection = () => `
+const callbackSection = (fromSides = false) => `
   <section class="section" style="padding-top:0">
     <div class="container">
       <div class="callback" data-aos="fade-up">
-        <div>
+        <div${fromSides ? ' data-aos="fade-right" data-aos-delay="80"' : ""}>
           <span class="eyebrow" style="color:#ffb38f">Request a Free Call Back</span>
           <h2>How Can We Help?</h2>
           <p>Assessment notice, VAT audit, new company or just a question about your return — leave your number and a senior consultant (not a call centre) will ring you back.</p>
@@ -124,7 +131,7 @@ const callbackSection = () => `
             <li><span class="cic"><i class="fa-solid fa-location-dot"></i></span><div><strong>Head office</strong><span>${ETAX.address}</span></div></li>
           </ul>
         </div>
-        <form class="form-card" id="callbackForm" novalidate>
+        <form class="form-card" id="callbackForm" novalidate${fromSides ? ' data-aos="fade-left" data-aos-delay="140"' : ""}>
           <h3><i class="fa-solid fa-headset" style="color:var(--orange)"></i> Request a Call Back</h3>
           <div class="form-row">
             <div class="form-group"><label>Name *</label><input name="name" type="text" placeholder="Your full name" /></div>
@@ -196,7 +203,7 @@ function pageHome() {
   </section>
 
   <section class="features"><div class="container"><div class="features-grid">
-    ${ETAX.features.map((f, i) => `<div class="feature-card" data-aos="fade-up" data-aos-delay="${i * 90}"><span class="fic"><i class="${f.icon}"></i></span><h4>${esc(f.title)}</h4><p>${esc(f.text)}</p></div>`).join("")}
+    ${ETAX.features.map((f, i) => `<div class="feature-card" data-aos="${columnAos(i, 4)}" data-aos-delay="${(i % 4) * 90}"><span class="fic"><i class="${f.icon}"></i></span><h4>${esc(f.title)}</h4><p>${esc(f.text)}</p></div>`).join("")}
   </div></div></section>
 
   <section class="section"><div class="container"><div class="two-col">
@@ -226,7 +233,7 @@ function pageHome() {
 
   <section class="section section-ice"><div class="container">
     ${head("Our Services", "What We Bring To You", "Six practices, one promise: your compliance handled end-to-end by named professionals.", true)}
-    <div class="grid-3">${ETAX.services.map(serviceCard).join("")}</div>
+    <div class="grid-3">${ETAX.services.map((s, i) => serviceCard(s, i, "columns")).join("")}</div>
   </div></section>
 
   ${statsBand()}
@@ -239,26 +246,26 @@ function pageHome() {
     <div class="filter-bar" data-filter-group="projects">
       ${["All", "Tax", "VAT", "Audit", "Advisory"].map((c, i) => `<button class="filter-btn ${i === 0 ? "active" : ""}" data-filter="${c}">${c}</button>`).join("")}
     </div>
-    <div class="grid-3" id="projectGrid">${ETAX.projects.slice(0, 6).map(projectCard).join("")}</div>
+    <div class="grid-3" id="projectGrid">${ETAX.projects.slice(0, 6).map((p, i) => projectCard(p, i, "columns")).join("")}</div>
   </div></section>
 
   <section class="section section-ice"><div class="container">
     ${head("How It Works", "How We Work With Clients", "", true)}
     <div class="grid-3">
-      ${ETAX.steps.map((s, i) => `<article class="step-card" data-aos="fade-up" data-aos-delay="${i * 100}"><img src="${s.img}" alt="${esc(s.title)}" loading="lazy" /><div class="step-body"><span class="step-no">${s.no}</span><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></div></article>`).join("")}
+      ${ETAX.steps.map((s, i) => `<article class="step-card" data-aos="${columnAos(i)}" data-aos-delay="${(i % 3) * 100}"><img src="${s.img}" alt="${esc(s.title)}" loading="lazy" /><div class="step-body"><span class="step-no">${s.no}</span><h4>${esc(s.title)}</h4><p>${esc(s.text)}</p></div></article>`).join("")}
     </div>
   </div></section>
 
   ${calcSection()}
-  ${testimonialsSection()}
-  ${callbackSection()}
+  ${testimonialsSection(undefined, true)}
+  ${callbackSection(true)}
 
   <section class="section" style="padding-top:0"><div class="container">
     ${head("Latest News", "Our Latest News", "NBR updates and practical guides, written by the consultants who file for you.", true)}
-    <div class="grid-3">${ETAX.posts.slice(0, 3).map(postCard).join("")}</div>
+    <div class="grid-3">${ETAX.posts.slice(0, 3).map((p, i) => postCard(p, i, "columns")).join("")}</div>
     <div style="text-align:center;margin-top:2.2rem"><a class="btn btn-navy" href="blog">View All Articles <i class="fa-solid fa-arrow-right"></i></a></div>
   </div></section>
-  ${partnersSection()}`;
+  ${partnersSection(true)}`;
 }
 
 function pageAbout() {

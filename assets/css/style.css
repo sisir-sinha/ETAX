@@ -293,8 +293,16 @@ h1,h2,h3,h4,h5{font-family:var(--head);color:var(--navy-ink);line-height:1.2;fon
 .breadcrumb .cur{color:var(--orange)}
 
 /* ---------- Detail layouts ---------- */
-.detail-grid{display:grid;grid-template-columns:340px 1fr;gap:2.4rem;align-items:start}
-.sidebar{display:grid;gap:1.4rem;position:sticky;top:110px}
+/* minmax(0,1fr) + min-width:0 are LOAD-BEARING: grid items default to
+   min-width:auto and refuse to shrink below their content. A Swiper inside
+   such an item then sizes itself to its (flex-row) content and blows the
+   column out to millions of px — the project-detail gallery bug. */
+.detail-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:2.4rem;align-items:start}
+.detail-grid>*{min-width:0}
+.detail-main{min-width:0;max-width:100%;overflow-wrap:break-word}
+.sidebar{display:grid;gap:1.4rem;position:sticky;top:110px;min-width:0}
+.swiper{min-width:0;max-width:100%}
+.grid-3>*,.grid-4>*,.two-col>*,.features-grid>*,.footer-grid>*,.calc>*,.callback>*{min-width:0}
 .side-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;box-shadow:var(--shadow-sm)}
 .side-card h4{padding:1.1rem 1.3rem;background:var(--ice-soft);border-bottom:1px solid var(--line);font-size:1rem}
 .side-links a{display:flex;justify-content:space-between;align-items:center;padding:.85rem 1.3rem;border-bottom:1px solid #f2f5f8;color:#4a5560;font-weight:600;font-size:.92rem;transition:.2s}
@@ -318,15 +326,17 @@ h1,h2,h3,h4,h5{font-family:var(--head);color:var(--navy-ink);line-height:1.2;fon
 .bar-row .bar-head{display:flex;justify-content:space-between;font-family:var(--head);font-weight:700;color:var(--navy-ink);font-size:.88rem;margin-bottom:.4rem}
 .bar-track{height:9px;background:var(--ice);border-radius:9px;overflow:hidden}
 .bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--navy),var(--orange));border-radius:9px;transition:width 1.2s ease}
-.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.4rem 0}
+.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:1.4rem 0}
 .result-box{background:var(--orange-soft);border-radius:12px;padding:1.2rem;text-align:center}
 .result-box strong{display:block;font-family:var(--head);font-size:1.35rem;color:var(--orange-dark)}
 .result-box span{font-size:.82rem;font-weight:600}
-.gallery-swiper{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
-.gallery-swiper img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.gallery-swiper{width:100%;max-width:100%;min-width:0;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
+.gallery-swiper .swiper-wrapper{min-width:0}
+.gallery-swiper .swiper-slide{min-width:0;height:auto}
+.gallery-swiper img{display:block;width:100%;max-width:100%;aspect-ratio:16/9;object-fit:cover}
 .gallery-swiper .swiper-button-next,.gallery-swiper .swiper-button-prev{color:#fff;background:rgba(0,44,96,.65);width:44px;height:44px;border-radius:50%}
 .gallery-swiper .swiper-button-next::after,.gallery-swiper .swiper-button-prev::after{font-size:1rem}
-.prev-next{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.4rem}
+.prev-next{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;margin-top:2.4rem}
 .pn-card{border:1.5px solid var(--line);border-radius:12px;padding:1.1rem 1.3rem;transition:.25s}
 .pn-card:hover{border-color:var(--orange);background:var(--orange-soft)}
 .pn-card.right{text-align:right}
@@ -457,7 +467,7 @@ h1,h2,h3,h4,h5{font-family:var(--head);color:var(--navy-ink);line-height:1.2;fon
   .section{padding:62px 0}
   .grid-3{grid-template-columns:1fr 1fr}
   .two-col,.callback,.calc{grid-template-columns:1fr}
-  .detail-grid{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:minmax(0,1fr)}
   .sidebar{position:static;order:2}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .about-media{margin-bottom:2.4rem}

@@ -613,7 +613,7 @@ function afterRender(parts) {
     if ($(".hero-swiper")) swipers.push(new Swiper(".hero-swiper", { loop: true, speed: 850, effect: "fade", fadeEffect: { crossFade: true }, autoplay: { delay: 6000, disableOnInteraction: false }, pagination: { el: ".hero-swiper .swiper-pagination", clickable: true }, navigation: { nextEl: ".hero-next", prevEl: ".hero-prev" } }));
     if ($(".testi-swiper")) swipers.push(new Swiper(".testi-swiper", { slidesPerView: 1, spaceBetween: 24, loop: true, autoplay: { delay: 5200, disableOnInteraction: false }, pagination: { el: ".testi-swiper .swiper-pagination", clickable: true }, breakpoints: { 720: { slidesPerView: 2 }, 1080: { slidesPerView: 3 } } }));
     if ($(".partners-swiper")) swipers.push(new Swiper(".partners-swiper", { slidesPerView: 2, spaceBetween: 30, loop: true, speed: 700, autoplay: { delay: 2200, disableOnInteraction: false }, breakpoints: { 640: { slidesPerView: 3 }, 1000: { slidesPerView: 5 } } }));
-    if ($(".gallery-swiper")) swipers.push(new Swiper(".gallery-swiper", { loop: true, speed: 600, autoplay: { delay: 4500 }, pagination: { el: ".gallery-swiper .swiper-pagination", clickable: true }, navigation: { nextEl: ".gallery-swiper .swiper-button-next", prevEl: ".gallery-swiper .swiper-button-prev" } }));
+    if ($(".gallery-swiper")) swipers.push(new Swiper(".gallery-swiper", { loop: true, speed: 600, observer: true, observeParents: true, observeSlideChildren: true, autoplay: { delay: 4500 }, pagination: { el: ".gallery-swiper .swiper-pagination", clickable: true }, navigation: { nextEl: ".gallery-swiper .swiper-button-next", prevEl: ".gallery-swiper .swiper-button-prev" } }));
   }
   // AOS
   if (typeof AOS !== "undefined") { AOS.refreshHard ? AOS.refreshHard() : AOS.refresh(); }

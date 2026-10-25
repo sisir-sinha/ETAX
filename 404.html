@@ -4,15 +4,30 @@
   <meta charset="UTF-8" />
   <title>ETAX — Redirecting…</title>
   <script>
-    // SPA fallback for GitHub Pages: send unknown paths to the hash router.
-    (function () {
-      var base = location.pathname.replace(/\/[^\/]*$/, "/");
-      if (!/\/$/.test(base)) base += "/";
-      location.replace(base + "index.html#/" );
-    })();
+    /* Clean-URL SPA fallback for GitHub Pages (pattern: spa-github-pages).
+       GH Pages serves this file for any unknown path such as
+       /ETAX/service/vat-consultancy. We rewrite it to
+       /ETAX/?/service/vat-consultancy and the bootstrap script in
+       index.html restores the clean URL with history.replaceState —
+       so refreshes and shared deep links work without "#" routes. */
+    (function (l) {
+      var ROUTES = ["about", "services", "service", "projects", "project", "blog", "post", "team", "contact"];
+      var seg = l.pathname.split("/").filter(Boolean);
+      var keep = 0; // path segments belonging to the deploy base, not the app
+      if (/\.github\.io$/.test(l.hostname) && seg.length) keep = 1;              // user.github.io/<repo>/…
+      else if (seg.length > 1 && ROUTES.indexOf(seg[0]) === -1) keep = 1;        // any other sub-folder deploy
+
+      l.replace(
+        l.protocol + "//" + l.hostname + (l.port ? ":" + l.port : "") +
+        l.pathname.split("/").slice(0, 1 + keep).join("/") + "/?/" +
+        l.pathname.slice(1).split("/").slice(keep).join("/").replace(/&/g, "~and~") +
+        (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+        l.hash
+      );
+    })(location);
   </script>
 </head>
 <body>
-  <p>Redirecting to <a href="./index.html#/">ETAX home</a>…</p>
+  <p>Redirecting to <a href="./">ETAX</a>…</p>
 </body>
 </html>

@@ -8,6 +8,36 @@
   <meta name="theme-color" content="#00387a" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f26522'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='36' font-weight='800' fill='white' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E" />
 
+  <script>
+    /* Clean-URL SPA bootstrap (History API — no # routes). Runs before any
+       stylesheet/script below so the <base> tag makes every relative URL
+       (assets/…, about, service/…) resolve from the app root, even when the
+       visitor lands directly on /service/vat-consultancy. Also restores the
+       real path after the GitHub Pages 404 redirect and upgrades any old
+       #/… bookmark to its clean URL. */
+    (function (l) {
+      var ROUTES = ["about", "services", "service", "projects", "project", "blog", "post", "team", "contact"];
+      var seg = l.pathname.split("/").filter(Boolean);
+      var base = "/";
+      if (/\.github\.io$/.test(l.hostname) && seg.length) base = "/" + seg[0] + "/";           // user.github.io/<repo>/
+      else if (seg.length > 1 && ROUTES.indexOf(seg[0]) === -1) base = "/" + seg[0] + "/";      // any other sub-folder deploy
+      window.__ETAX_BASE__ = base;
+      var b = document.createElement("base");
+      b.href = l.origin + base;
+      document.head.appendChild(b);
+
+      // Arrived via 404.html as /?/the/real/path  ->  restore clean URL
+      if (l.search[1] === "/") {
+        var decoded = l.search.slice(1).split("&").map(function (s) { return s.replace(/~and~/g, "&"); }).join("?");
+        history.replaceState(null, "", base.replace(/\/$/, "") + decoded + l.hash);
+      }
+      // Old bookmark /#/about  ->  /about
+      if (l.hash.indexOf("#/") === 0) {
+        history.replaceState(null, "", base + l.hash.slice(2));
+      }
+    })(location);
+  </script>
+
   <!-- Fonts (same family as the original Consultax template) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -71,23 +101,23 @@
     <!-- Main header -->
     <div class="mainbar" id="mainbar">
       <div class="container mainbar-inner">
-        <a href="#/" class="logo" aria-label="ETAX home">
+        <a href="./" class="logo" aria-label="ETAX home">
           <span class="logo-mark"><i class="fa-solid fa-scale-balanced"></i></span>
           <span class="logo-text">E<em>TAX</em><small>TAX • VAT • AUDIT • ADVISORY</small></span>
         </a>
 
         <nav class="mainnav" aria-label="Main navigation">
           <ul id="mainNav">
-            <li><a href="#/" data-nav="home">Home</a></li>
-            <li><a href="#/about" data-nav="about">About Us</a></li>
+            <li><a href="./" data-nav="home">Home</a></li>
+            <li><a href="about" data-nav="about">About Us</a></li>
             <li class="has-dropdown">
-              <a href="#/services" data-nav="services">Services <i class="fa-solid fa-angle-down"></i></a>
+              <a href="services" data-nav="services">Services <i class="fa-solid fa-angle-down"></i></a>
               <ul class="dropdown" id="serviceDropdown"><!-- filled from data.js --></ul>
             </li>
-            <li><a href="#/projects" data-nav="projects">Case Studies</a></li>
-            <li><a href="#/team" data-nav="team">Our Team</a></li>
-            <li><a href="#/blog" data-nav="blog">News</a></li>
-            <li><a href="#/contact" data-nav="contact">Contact</a></li>
+            <li><a href="projects" data-nav="projects">Case Studies</a></li>
+            <li><a href="team" data-nav="team">Our Team</a></li>
+            <li><a href="blog" data-nav="blog">News</a></li>
+            <li><a href="contact" data-nav="contact">Contact</a></li>
           </ul>
         </nav>
 
@@ -104,21 +134,21 @@
   <div class="drawer-backdrop" id="drawerBackdrop"></div>
   <aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
     <div class="drawer-head">
-      <a href="#/" class="logo"><span class="logo-mark"><i class="fa-solid fa-scale-balanced"></i></span><span class="logo-text">E<em>TAX</em></span></a>
+      <a href="./" class="logo"><span class="logo-mark"><i class="fa-solid fa-scale-balanced"></i></span><span class="logo-text">E<em>TAX</em></span></a>
       <button class="icon-btn" id="drawerClose" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <nav aria-label="Mobile navigation">
       <ul class="drawer-nav">
-        <li><a href="#/">Home</a></li>
-        <li><a href="#/about">About Us</a></li>
+        <li><a href="./">Home</a></li>
+        <li><a href="about">About Us</a></li>
         <li class="drawer-accordion">
           <button class="drawer-acc-btn" aria-expanded="false">Services <i class="fa-solid fa-plus"></i></button>
           <ul class="drawer-sub" id="drawerServices"><!-- filled from data.js --></ul>
         </li>
-        <li><a href="#/projects">Case Studies</a></li>
-        <li><a href="#/team">Our Team</a></li>
-        <li><a href="#/blog">News</a></li>
-        <li><a href="#/contact">Contact</a></li>
+        <li><a href="projects">Case Studies</a></li>
+        <li><a href="team">Our Team</a></li>
+        <li><a href="blog">News</a></li>
+        <li><a href="contact">Contact</a></li>
       </ul>
     </nav>
     <div class="drawer-foot">
@@ -135,7 +165,7 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-about">
-        <a href="#/" class="logo logo-light"><span class="logo-mark"><i class="fa-solid fa-scale-balanced"></i></span><span class="logo-text">E<em>TAX</em><small>TAX • VAT • AUDIT • ADVISORY</small></span></a>
+        <a href="./" class="logo logo-light"><span class="logo-mark"><i class="fa-solid fa-scale-balanced"></i></span><span class="logo-text">E<em>TAX</em><small>TAX • VAT • AUDIT • ADVISORY</small></span></a>
         <p>Dhaka Based firm of chartered accountants, income-tax practitioners and VAT consultants — helping Bangladeshi businesses file right, pay right and grow with confidence since 2001.</p>
         <div class="footer-socials">
           <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
@@ -153,12 +183,12 @@
       <div class="footer-col">
         <h4>Company</h4>
         <ul>
-          <li><a href="#/about">About Us</a></li>
-          <li><a href="#/team">Our Team</a></li>
-          <li><a href="#/projects">Case Studies</a></li>
-          <li><a href="#/blog">Latest News</a></li>
-          <li><a href="#/contact">Contact Us</a></li>
-          <li><a href="#/contact">Request a Call Back</a></li>
+          <li><a href="about">About Us</a></li>
+          <li><a href="team">Our Team</a></li>
+          <li><a href="projects">Case Studies</a></li>
+          <li><a href="blog">Latest News</a></li>
+          <li><a href="contact">Contact Us</a></li>
+          <li><a href="contact">Request a Call Back</a></li>
         </ul>
       </div>
 
@@ -179,7 +209,7 @@
     <div class="footer-bottom">
       <div class="container">
         <p>© <span id="year"></span> ETAX Consultants Ltd. All rights reserved.</p>
-        <p class="footer-legal"><a href="#/about">Privacy Policy</a> · <a href="#/about">Terms of Service</a></p>
+        <p class="footer-legal"><a href="about">Privacy Policy</a> · <a href="about">Terms of Service</a></p>
       </div>
     </div>
   </footer>

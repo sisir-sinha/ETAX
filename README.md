@@ -13,20 +13,20 @@ tax/VAT/audit consultancy.
 | Font Awesome 4 (local) | **Font Awesome 6 Pro** via CDN (`surajit-singha-sisir.github.io/FontAwesome-6-Pro`) |
 | Slick carousels | **Swiper 11** via CDN (hero, testimonials, partners, galleries) |
 | — | **AOS** scroll animations via CDN |
-| 17 static HTML files | One `index.html` shell; pages rendered by a hash router from `assets/js/data.js` |
+| 17 static HTML files | One `index.html` shell; pages rendered by a History-API router (clean URLs — no `#`) from `assets/js/data.js` |
 | Jekyll GitHub Pages workflow | Static deploy workflow that publishes only the new site |
 
-## Pages (hash routes)
+## Pages (clean URLs)
 
 | Route | Page |
 |---|---|
-| `#/` | Home — hero slider, features, mission, services, counters, case-study filter, tax calculator, testimonials, call-back, news, partners |
-| `#/about` | About — story, mission/values/motto, 25-year stats, leadership |
-| `#/services` · `#/service/:slug` | Services grid + detail (deliverables, performance bars, FAQ) |
-| `#/projects` · `#/project/:slug` | Case studies with category filter + detail (Swiper gallery, results, prev/next) |
-| `#/blog` · `#/post/:slug` | News with live search & category filter + article page with working comments (localStorage) |
-| `#/team` | Team grid with profile modals + testimonials |
-| `#/contact` | Offices (Dhaka, Chattogram, Sylhet), contact form, map, FAQ |
+| `/` | Home — hero slider, features, mission, services, counters, case-study filter, tax calculator, testimonials, call-back, news, partners |
+| `/about` | About — story, mission/values/motto, 25-year stats, leadership |
+| `/services` · `/service/:slug` | Services grid + detail (deliverables, performance bars, FAQ) |
+| `/projects` · `/project/:slug` | Case studies with category filter + detail (Swiper gallery, results, prev/next) |
+| `/blog` · `/post/:slug` | News with live search & category filter + article page with working comments (localStorage) |
+| `/team` | Team grid with profile modals + testimonials |
+| `/contact` | Offices (Dhaka, Chattogram, Sylhet), contact form, map, FAQ |
 
 ## Functionality
 
@@ -41,9 +41,14 @@ tax/VAT/audit consultancy.
 ## Run locally
 
 ```bash
-python3 -m http.server 8000
-# open http://localhost:8000
+python3 server.py
+# open http://localhost:8000  — try http://localhost:8000/about too
 ```
+
+`server.py` is a tiny SPA-fallback server: unknown paths are served
+`index.html` so clean URLs like `/about` survive a refresh locally.
+On GitHub Pages the same job is done by `404.html` + the redirect-restore
+script in `index.html` (old `#/…` bookmarks are auto-upgraded to clean URLs).
 
 ## Edit content
 
@@ -55,5 +60,4 @@ All text, services, projects, posts, team and testimonials live in
 
 Pushing to `main` runs `.github/workflows/static.yml`, which assembles
 `index.html`, `404.html`, `.nojekyll` and `assets/` into `_site` and deploys
-to GitHub Pages. The legacy HTTrack mirror remains in the repo for reference
-but is not published.
+to GitHub Pages.

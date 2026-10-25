@@ -39,7 +39,7 @@ const pageHeader = (title, crumb, img) => `
     <img class="bg" src="${img || IMG + "bg-pheader.jpg"}" alt="" />
     <div class="container" data-aos="fade-up">
       <h1>${esc(title)}</h1>
-      <nav class="breadcrumb"><a href="#/">Home</a><i class="fa-solid fa-angle-right"></i><span class="cur">${esc(crumb)}</span></nav>
+      <nav class="breadcrumb"><a href="./">Home</a><i class="fa-solid fa-angle-right"></i><span class="cur">${esc(crumb)}</span></nav>
     </div>
   </section>`;
 
@@ -47,27 +47,27 @@ const serviceCard = (s, i) => `
   <article class="service-card" data-aos="fade-up" data-aos-delay="${(i % 3) * 90}">
     <div class="service-media"><img src="${s.img}" alt="${esc(s.title)}" loading="lazy" /><span class="service-icon"><i class="${s.icon}"></i></span></div>
     <div class="service-body">
-      <h4><a href="#/service/${s.slug}">${esc(s.title)}</a></h4><p>${esc(s.short)}</p>
+      <h4><a href="service/${s.slug}">${esc(s.title)}</a></h4><p>${esc(s.short)}</p>
       <div class="service-foot">
         <span class="service-price"><small>STARTING FROM</small>${esc(s.price)}</span>
-        <a class="link-arrow" href="#/service/${s.slug}">Read More <i class="fa-solid fa-arrow-right"></i></a>
+        <a class="link-arrow" href="service/${s.slug}">Read More <i class="fa-solid fa-arrow-right"></i></a>
       </div>
     </div>
   </article>`;
 
 const projectCard = (p, i) => `
-  <article class="project-card" data-cat="${esc(p.cat)}" data-aos="fade-up" data-aos-delay="${(i % 3) * 90}" data-goto="#/project/${p.slug}" role="link" tabindex="0">
+  <article class="project-card" data-cat="${esc(p.cat)}" data-aos="fade-up" data-aos-delay="${(i % 3) * 90}" data-goto="project/${p.slug}" role="link" tabindex="0">
     <img src="${p.img}" alt="${esc(p.title)}" loading="lazy" />
     <div class="project-overlay"><span class="cat">${esc(p.cat)} · ${esc(p.place)}</span><h4>${esc(p.title)}</h4><p>${esc(p.excerpt)}</p></div>
   </article>`;
 
 const postCard = (p, i) => `
   <article class="blog-card" data-cat="${esc(p.cat)}" data-title="${esc((p.title + " " + p.excerpt).toLowerCase())}" data-aos="fade-up" data-aos-delay="${(i % 3) * 90}">
-    <div class="blog-media"><a href="#/post/${p.slug}"><img src="${p.img}" alt="${esc(p.title)}" loading="lazy" /></a><span class="blog-date"><i class="fa-regular fa-calendar"></i> ${esc(p.date)}</span></div>
+    <div class="blog-media"><a href="post/${p.slug}"><img src="${p.img}" alt="${esc(p.title)}" loading="lazy" /></a><span class="blog-date"><i class="fa-regular fa-calendar"></i> ${esc(p.date)}</span></div>
     <div class="blog-body">
       <div class="blog-meta"><span><i class="fa-solid fa-folder-open"></i> ${esc(p.cat)}</span><span><i class="fa-solid fa-user-pen"></i> ${esc(p.author.split(",")[0])}</span><span><i class="fa-regular fa-clock"></i> ${esc(p.read)}</span></div>
-      <h4><a href="#/post/${p.slug}">${esc(p.title)}</a></h4><p>${esc(p.excerpt)}</p>
-      <a class="link-arrow" href="#/post/${p.slug}">Continue Reading <i class="fa-solid fa-arrow-right"></i></a>
+      <h4><a href="post/${p.slug}">${esc(p.title)}</a></h4><p>${esc(p.excerpt)}</p>
+      <a class="link-arrow" href="post/${p.slug}">Continue Reading <i class="fa-solid fa-arrow-right"></i></a>
     </div>
   </article>`;
 
@@ -185,7 +185,7 @@ function pageHome() {
               <p>${esc(s.text)}</p>
               <div class="hero-cta">
                 <button class="btn btn-primary" data-open-quote>Get Quote <i class="fa-solid fa-arrow-right"></i></button>
-                <a class="btn btn-outline" href="#/services">Our Services</a>
+                <a class="btn btn-outline" href="services">Our Services</a>
               </div>
             </div>
             <div class="hero-person"><img src="${s.person}" alt="ETAX consultant" /></div>
@@ -217,7 +217,7 @@ function pageHome() {
         <li><i class="fa-solid fa-circle-check"></i> Bangla-first explanations, English reporting for HQ</li>
       </ul>
       <div class="ceo-row">
-        <a class="btn btn-primary" href="#/about">About Us <i class="fa-solid fa-arrow-right"></i></a>
+        <a class="btn btn-primary" href="about">About Us <i class="fa-solid fa-arrow-right"></i></a>
         <img src="${IMG}sign-dark.png" alt="Managing Partner signature" />
         <div class="ceo-meta"><strong>Md. Rahimul Islam, FCA</strong><span>Managing Partner, ETAX</span></div>
       </div>
@@ -234,7 +234,7 @@ function pageHome() {
   <section class="section"><div class="container">
     <div style="display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap">
       ${head("Case Studies", "We Are The Leaders", "A few recent engagements — filter by practice area.")}
-      <a class="btn btn-navy" href="#/projects" style="margin-bottom:48px">All Case Studies</a>
+      <a class="btn btn-navy" href="projects" style="margin-bottom:48px">All Case Studies</a>
     </div>
     <div class="filter-bar" data-filter-group="projects">
       ${["All", "Tax", "VAT", "Audit", "Advisory"].map((c, i) => `<button class="filter-btn ${i === 0 ? "active" : ""}" data-filter="${c}">${c}</button>`).join("")}
@@ -256,7 +256,7 @@ function pageHome() {
   <section class="section" style="padding-top:0"><div class="container">
     ${head("Latest News", "Our Latest News", "NBR updates and practical guides, written by the consultants who file for you.", true)}
     <div class="grid-3">${ETAX.posts.slice(0, 3).map(postCard).join("")}</div>
-    <div style="text-align:center;margin-top:2.2rem"><a class="btn btn-navy" href="#/blog">View All Articles <i class="fa-solid fa-arrow-right"></i></a></div>
+    <div style="text-align:center;margin-top:2.2rem"><a class="btn btn-navy" href="blog">View All Articles <i class="fa-solid fa-arrow-right"></i></a></div>
   </div></section>
   ${partnersSection()}`;
 }
@@ -275,7 +275,7 @@ function pageAbout() {
         <li><i class="fa-solid fa-circle-check"></i> Panel auditors accepted by all major scheduled banks</li>
         <li><i class="fa-solid fa-circle-check"></i> Associate network in Chattogram, Khulna, Rajshahi & Sylhet</li>
       </ul>
-      <a class="btn btn-primary" href="#/team">Meet Our Team</a>
+      <a class="btn btn-primary" href="team">Meet Our Team</a>
     </div>
     <div class="about-media" data-aos="fade-left">
       <img class="main-img" src="${IMG}about3.jpg" alt="ETAX office" />
@@ -302,7 +302,7 @@ function pageAbout() {
   <section class="section"><div class="container">
     <div style="display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap">
       ${head("Leadership", "Our Team Of Leading Experts", "Click any member to read their profile.")}
-      <a class="btn btn-navy" href="#/team" style="margin-bottom:48px">Full Team</a>
+      <a class="btn btn-navy" href="team" style="margin-bottom:48px">Full Team</a>
     </div>
     <div class="grid-4">${ETAX.team.slice(0, 4).map(teamCard).join("")}</div>
   </div></section>
@@ -340,7 +340,7 @@ function pageServiceDetail(slug) {
   <section class="section"><div class="container"><div class="detail-grid">
     <aside class="sidebar">
       <div class="side-card"><h4>All Services</h4><div class="side-links">
-        ${ETAX.services.map(x => `<a href="#/service/${x.slug}" class="${x.slug === s.slug ? "active" : ""}">${esc(x.title)}<i class="fa-solid fa-angle-right"></i></a>`).join("")}
+        ${ETAX.services.map(x => `<a href="service/${x.slug}" class="${x.slug === s.slug ? "active" : ""}">${esc(x.title)}<i class="fa-solid fa-angle-right"></i></a>`).join("")}
       </div></div>
       <div class="help-box">
         <h4>How Can We Help?</h4><p>Talk to a ${esc(s.title.split(" ")[0].toLowerCase())} specialist today — the first consultation is free.</p>
@@ -426,8 +426,8 @@ function pageProjectDetail(slug) {
       <div class="testi-card"><img class="stars" src="${IMG}stars.png" alt="5 stars" /><p>“${esc(t.text)}”</p>
         <div class="testi-person"><img src="${t.img}" alt="${esc(t.name)}" /><div><strong>${esc(t.name)}</strong><span>${esc(t.role)}</span></div></div></div>
       <div class="prev-next">
-        <a class="pn-card" href="#/project/${prev.slug}"><small><i class="fa-solid fa-arrow-left"></i> Previous case</small><strong>${esc(prev.title)}</strong></a>
-        <a class="pn-card right" href="#/project/${next.slug}"><small>Next case <i class="fa-solid fa-arrow-right"></i></small><strong>${esc(next.title)}</strong></a>
+        <a class="pn-card" href="project/${prev.slug}"><small><i class="fa-solid fa-arrow-left"></i> Previous case</small><strong>${esc(prev.title)}</strong></a>
+        <a class="pn-card right" href="project/${next.slug}"><small>Next case <i class="fa-solid fa-arrow-right"></i></small><strong>${esc(next.title)}</strong></a>
       </div>
     </div>
   </div></div></section>`;
@@ -460,10 +460,10 @@ function pagePost(slug) {
   <section class="section"><div class="container"><div class="detail-grid">
     <aside class="sidebar">
       <div class="side-card"><h4>Categories</h4><div class="side-links">
-        ${[...new Set(ETAX.posts.map(x => x.cat))].map(c => `<a href="#/blog" class="${c === p.cat ? "active" : ""}">${esc(c)}<i class="fa-solid fa-angle-right"></i></a>`).join("")}
+        ${[...new Set(ETAX.posts.map(x => x.cat))].map(c => `<a href="blog" class="${c === p.cat ? "active" : ""}">${esc(c)}<i class="fa-solid fa-angle-right"></i></a>`).join("")}
       </div></div>
       <div class="side-card"><h4>Recent Posts</h4><div class="side-links">
-        ${ETAX.posts.slice(0, 4).map(x => `<a href="#/post/${x.slug}">${esc(x.title)}<i class="fa-solid fa-angle-right"></i></a>`).join("")}
+        ${ETAX.posts.slice(0, 4).map(x => `<a href="post/${x.slug}">${esc(x.title)}<i class="fa-solid fa-angle-right"></i></a>`).join("")}
       </div></div>
       <div class="help-box"><h4>Need help with this topic?</h4><p>Our consultants handle exactly this — every week.</p>
         <button class="btn btn-primary btn-block" style="margin-top:1rem" data-open-quote>Ask a Consultant</button></div>
@@ -501,7 +501,7 @@ function pageTeam() {
     <div class="grid-4">${ETAX.team.map(teamCard).join("")}</div>
     <div class="cta-band" data-aos="fade-up">
       <div><h3>You want to join us?</h3><p>Articleship students and experienced tax executives — a dream job awaits you at ETAX.</p></div>
-      <a class="btn" href="#/contact">Apply via Contact Page <i class="fa-solid fa-arrow-right"></i></a>
+      <a class="btn" href="contact">Apply via Contact Page <i class="fa-solid fa-arrow-right"></i></a>
     </div>
   </div></section>
   ${testimonialsSection("What Our Clients Say")}
@@ -555,15 +555,35 @@ function page404() {
   return `<section class="section"><div class="container notfound">
     <div class="big">404</div><h2 style="margin:.6rem 0">Page Not Found</h2>
     <p>The page you requested has moved — much like a well-planned tax position.</p>
-    <a class="btn btn-primary" style="margin-top:1.4rem" href="#/"><i class="fa-solid fa-house"></i> Back To Home</a>
+    <a class="btn btn-primary" style="margin-top:1.4rem" href="./"><i class="fa-solid fa-house"></i> Back To Home</a>
   </div></section>`;
 }
 
-/* ---------------- Router ---------------- */
+/* ---------------- Router (History API — clean URLs, no #) ---------------- */
+const BASE = window.__ETAX_BASE__ || "/";
 const titles = { home: "ETAX — Tax, VAT & Financial Consulting in Bangladesh", about: "About Us — ETAX", services: "Our Services — ETAX", projects: "Case Studies — ETAX", blog: "News & Insights — ETAX", team: "Our Team — ETAX", contact: "Contact Us — ETAX" };
+
+/* Current in-app path ("" = home), with the deploy base stripped:
+   "/ETAX/service/vat" -> "service/vat", "/about" -> "about" */
+function appPath() {
+  let p = location.pathname;
+  if (BASE !== "/" && p.indexOf(BASE) === 0) p = p.slice(BASE.length);
+  else if (BASE !== "/" && p === BASE.replace(/\/$/, "")) p = "";
+  else p = p.replace(/^\//, "");
+  return p.replace(/(^|\/)index\.html$/, "").replace(/\/$/, "");
+}
+/* Navigate without reload. Accepts "about", "/about", "./" (home) or a full
+   pathname already including the base (from a resolved anchor href). */
+function navigate(to) {
+  let path;
+  if (to === "./" || to === "" || to === "/") path = BASE;
+  else if (to.indexOf(BASE) === 0) path = to;
+  else path = BASE + to.replace(/^\.\//, "").replace(/^\//, "");
+  if (path !== location.pathname) history.pushState(null, "", path);
+  route();
+}
 function route() {
-  const hash = (location.hash || "#/").replace(/^#/, "");
-  const parts = hash.split("/").filter(Boolean);
+  const parts = appPath().split("/").filter(Boolean);
   let html, nav = "home", title = titles.home;
   if (!parts.length) { html = pageHome(); }
   else if (parts[0] === "about") { html = pageAbout(); nav = "about"; title = titles.about; }
@@ -650,10 +670,10 @@ function calcTax(income, free, invest) {
 /* ---------------- Global interactions ---------------- */
 // Fill nav/footer/drawer from data
 (function buildChrome() {
-  const link = s => `<li><a href="#/service/${s.slug}"><i class="${s.icon}"></i> ${esc(s.title)}</a></li>`;
+  const link = s => `<li><a href="service/${s.slug}"><i class="${s.icon}"></i> ${esc(s.title)}</a></li>`;
   $("#serviceDropdown").innerHTML = ETAX.services.map(link).join("");
-  $("#drawerServices").innerHTML = `<li><a href="#/services">All Services</a></li>` + ETAX.services.map(s => `<li><a href="#/service/${s.slug}">${esc(s.title)}</a></li>`).join("");
-  $("#footerServices").innerHTML = ETAX.services.map(s => `<li><a href="#/service/${s.slug}">${esc(s.title)}</a></li>`).join("");
+  $("#drawerServices").innerHTML = `<li><a href="services">All Services</a></li>` + ETAX.services.map(s => `<li><a href="service/${s.slug}">${esc(s.title)}</a></li>`).join("");
+  $("#footerServices").innerHTML = ETAX.services.map(s => `<li><a href="service/${s.slug}">${esc(s.title)}</a></li>`).join("");
   $("#qService").innerHTML = `<option value="">Select a service…</option>` + ETAX.services.map(s => `<option>${esc(s.title)}</option>`).join("") + `<option>Not sure — advise me</option>`;
   $("#year").textContent = new Date().getFullYear();
 })();
@@ -679,12 +699,12 @@ $(".drawer-acc-btn").addEventListener("click", e => { const li = e.currentTarget
 // Search overlay
 const overlay = $("#searchOverlay"), sInput = $("#searchInput"), sResults = $("#searchResults");
 const searchable = [
-  ...ETAX.services.map(s => ({ type: "Service", icon: s.icon, title: s.title, sub: s.short, href: "#/service/" + s.slug })),
-  ...ETAX.projects.map(p => ({ type: "Case Study", icon: "fa-solid fa-briefcase", title: p.title, sub: p.excerpt, href: "#/project/" + p.slug })),
-  ...ETAX.posts.map(p => ({ type: "Article", icon: "fa-regular fa-newspaper", title: p.title, sub: p.excerpt, href: "#/post/" + p.slug })),
-  { type: "Page", icon: "fa-solid fa-users", title: "Our Team", sub: "Meet the consultants behind ETAX", href: "#/team" },
-  { type: "Page", icon: "fa-solid fa-calculator", title: "Income Tax Calculator", sub: "Estimate your personal tax on the home page tool", href: "#/" },
-  { type: "Page", icon: "fa-solid fa-phone", title: "Contact Us", sub: ETAX.address, href: "#/contact" },
+  ...ETAX.services.map(s => ({ type: "Service", icon: s.icon, title: s.title, sub: s.short, href: "service/" + s.slug })),
+  ...ETAX.projects.map(p => ({ type: "Case Study", icon: "fa-solid fa-briefcase", title: p.title, sub: p.excerpt, href: "project/" + p.slug })),
+  ...ETAX.posts.map(p => ({ type: "Article", icon: "fa-regular fa-newspaper", title: p.title, sub: p.excerpt, href: "post/" + p.slug })),
+  { type: "Page", icon: "fa-solid fa-users", title: "Our Team", sub: "Meet the consultants behind ETAX", href: "team" },
+  { type: "Page", icon: "fa-solid fa-calculator", title: "Income Tax Calculator", sub: "Estimate your personal tax on the home page tool", href: "./" },
+  { type: "Page", icon: "fa-solid fa-phone", title: "Contact Us", sub: ETAX.address, href: "contact" },
 ];
 function runSearch(q) {
   q = (q || "").trim().toLowerCase();
@@ -704,7 +724,7 @@ function openModal(id) { const m = $(id); m.classList.add("open"); m.setAttribut
 function closeModal(m) { m.classList.remove("open"); m.setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; if (m.id === "videoModal") $("#videoFrame").innerHTML = ""; }
 document.addEventListener("click", e => {
   const dead = e.target.closest('a[href="#"]');
-  if (dead) { e.preventDefault(); return; } // placeholder social links must not trigger the hash router
+  if (dead) { e.preventDefault(); return; } // placeholder social links must not trigger router navigation
   const q = e.target.closest("[data-open-quote]");
   if (q) { closeDrawer(); if (q.dataset.service) $("#qService").value = q.dataset.service; openModal("#quoteModal"); return; }
   if (e.target.closest("[data-open-video]")) {
@@ -716,7 +736,7 @@ document.addEventListener("click", e => {
   const tc = e.target.closest("[data-team]");
   if (tc && !e.target.closest("a")) { openTeam(+tc.dataset.team); return; }
   const go = e.target.closest("[data-goto]");
-  if (go) { location.hash = go.dataset.goto; return; }
+  if (go) { navigate(go.dataset.goto); return; }
   const fq = e.target.closest(".faq-q");
   if (fq) { const it = fq.parentElement, was = it.classList.contains("open"); $$(".faq-item.open").forEach(x => { x.classList.remove("open"); x.querySelector(".faq-q").setAttribute("aria-expanded", "false"); }); if (!was) { it.classList.add("open"); fq.setAttribute("aria-expanded", "true"); } return; }
   const fb = e.target.closest(".filter-btn");
@@ -725,7 +745,7 @@ document.addEventListener("click", e => {
 document.addEventListener("keydown", e => {
   if (e.key !== "Enter") return;
   const tc = e.target.closest && e.target.closest("[data-team]"); if (tc) openTeam(+tc.dataset.team);
-  const go = e.target.closest && e.target.closest("[data-goto]"); if (go) location.hash = go.dataset.goto;
+  const go = e.target.closest && e.target.closest("[data-goto]"); if (go) navigate(go.dataset.goto);
 });
 function openTeam(i) {
   const m = ETAX.team[i]; if (!m) return;
@@ -809,8 +829,24 @@ document.addEventListener("submit", e => {
   }
 });
 
+/* Internal links: plain left-clicks become SPA navigation (pushState).
+   Modified clicks (Ctrl/Cmd/middle), external sites, mailto:/tel: and
+   target/download links keep their normal browser behaviour — and thanks
+   to the <base> tag + 404.html redirect they still land on the right page. */
+document.addEventListener("click", e => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target.closest && e.target.closest("a[href]");
+  if (!a || a.target || a.hasAttribute("download")) return;
+  const raw = a.getAttribute("href");
+  if (!raw || raw.charAt(0) === "#" || /^(mailto:|tel:|javascript:)/i.test(raw)) return;
+  const url = new URL(a.href);
+  if (url.origin !== location.origin) return;
+  e.preventDefault();
+  navigate(url.pathname + url.search);
+});
+
 /* ---------------- Boot ---------------- */
-addEventListener("hashchange", route);
+addEventListener("popstate", route);
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof AOS !== "undefined") AOS.init({ duration: 750, once: true, offset: 60 });
   route();

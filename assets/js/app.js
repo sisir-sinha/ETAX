@@ -239,7 +239,7 @@ function pageHome() {
     <div class="filter-bar" data-filter-group="projects">
       ${["All", "Tax", "VAT", "Audit", "Advisory"].map((c, i) => `<button class="filter-btn ${i === 0 ? "active" : ""}" data-filter="${c}">${c}</button>`).join("")}
     </div>
-    <div class="grid-3" id="projectGrid">${ETAX.projects.map(projectCard).join("")}</div>
+    <div class="grid-3" id="projectGrid">${ETAX.projects.slice(0, 6).map(projectCard).join("")}</div>
   </div></section>
 
   <section class="section section-ice"><div class="container">
@@ -381,7 +381,7 @@ function pageProjects() {
   return `
   ${pageHeader("Case Studies", "Case Studies", IMG + "bg-home2.jpg")}
   <section class="section"><div class="container">
-    ${head("We are the leaders", "Recent Engagements", "Filter by practice area. Client names are generalised for confidentiality — references available on request.", true)}
+    ${head("We are the leaders", "Recent Engagements", ETAX.projects.length + " engagements across tax, VAT, audit and advisory — filter by practice area. Client names are generalised for confidentiality — references available on request.", true)}
     <div class="filter-bar" data-filter-group="projects" style="justify-content:center">
       ${["All", "Tax", "VAT", "Audit", "Advisory"].map((c, i) => `<button class="filter-btn ${i === 0 ? "active" : ""}" data-filter="${c}">${c}</button>`).join("")}
     </div>

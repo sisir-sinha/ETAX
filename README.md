@@ -60,5 +60,4 @@ All text, services, projects, posts, team and testimonials live in
 
 Pushing to `main` runs `.github/workflows/static.yml`, which assembles
 `index.html`, `404.html`, `.nojekyll` and `assets/` into `_site` and deploys
-to GitHub Pages. The legacy HTTrack mirror remains in the repo for reference
-but is not published.
+to GitHub Pages.

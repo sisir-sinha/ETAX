@@ -30,9 +30,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Publish ONLY the redesigned site — the legacy HTTrack mirror
-      # (templates.thememodern.com/, hts-cache/, hts-log.txt, ...) stays
-      # in the repo history but is not deployed.
+      # Assemble exactly the files that make up the site.
       - name: Assemble site
         run: |
           mkdir -p _site
